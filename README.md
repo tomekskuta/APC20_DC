@@ -7,7 +7,7 @@ Remote script for Akai APC20 controller with added few features:
 ## How it works
 ![Akai APC20](./APC20.jpeg)
 
-All numbered buttons works only if `SHIFT` is pressed:
+All numbered buttons work only if `SHIFT` is pressed:
 - `1` - Tap tempo
 - `2` - Toggle between Device view selector and Clip view selector
 - `3` - Show/hide detail view
@@ -24,7 +24,10 @@ Navigation buttons switch between tracks and scenes banks instead of single trac
 In general I like this reverse feature so I decided to leave it as it is now and for me it works even better.
 
 ## How to use it
-TBC
+- [clone the repo](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+- copy `/dist/APC20_DC` catalog following [this instruction](https://help.ableton.com/hc/en-us/articles/209072009-Installing-third-party-remote-scripts)
+- Assign `APC20_DC` remote script to `Akai APC20` controller in the `Link MIDI` tab in Ableton Live preferences.
+![Remote Script assigning](./remote_script_assigning.png)
 
 ## Limitations
 I use original APC20 remote script from Ableton Live 10 which is written in Python2 so it probably **works only with AL10 and lower**. Remote scripts for AL11 are written with Python3.
