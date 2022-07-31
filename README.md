@@ -2,7 +2,7 @@
 Remote script for Akai APC20 controller with added few features:
 - Device Control on `USER3` sliders bank
 - Tap tempo
-- Reverted functionality of track selection buttons
+- Reversed functionality of track selection buttons
 
 ## How it works
 ![Akai APC20](./APC20.jpeg)
