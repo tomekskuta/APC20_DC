@@ -8,7 +8,6 @@ from _Framework.ButtonMatrixElement import ButtonMatrixElement
 from _Framework.ChannelTranslationSelector import ChannelTranslationSelector
 from _Framework.EncoderElement import EncoderElement
 from _Framework.InputControlElement import MIDI_CC_TYPE
-from _Framework.Layer import Layer
 from _Framework.TransportComponent import TransportComponent
 from _Framework.Util import nop
 from _APC.APC import APC
@@ -80,14 +79,16 @@ class APC20(APC):
 
             self._note_matrix.add_row(row)
         self._tap_tempo_button = self._scene_launch_buttons[0]
-        self._device_on_off_button = self._matrix.get_button(6, 3)
-        self._device_lock_button = self._matrix.get_button(7, 3)
-        self._device_clip_toggle_button = self._scene_launch_buttons[3]
-        self._detail_toggle_button = self._scene_launch_buttons[4]
+        self._device_on_off_button = self._matrix.get_button(6, 2)
+        self._device_lock_button = self._matrix.get_button(7, 2)
+        self._device_clip_toggle_button = self._scene_launch_buttons[4]
+        self._detail_toggle_button = self._scene_launch_buttons[3]
         self._detail_left_button = self._matrix.get_button(6, 4)
         self._detail_right_button = self._matrix.get_button(7, 4)
-        # self._device_bank_prev_button = self._matrix.get_button(6, 3)
-        # self._device_bank_next_button = self._matrix.get_button(7, 3)
+        self._nudge_up_button = self._matrix.get_button(7, 0)
+        self._nudge_down_button = self._matrix.get_button(6, 0)
+        self._device_bank_prev_button = self._matrix.get_button(6, 3)
+        self._device_bank_next_button = self._matrix.get_button(7, 3)
 
     def _create_session(self):
         self._session = SessionComponent(SESSION_WIDTH, SESSION_HEIGHT, name=u'Session_Control', auto_name=True, enable_skinning=True)
@@ -137,7 +138,7 @@ class APC20(APC):
 
     def _create_global_control(self):
         self._slider_modes = SliderModesComponent(self._mixer, tuple(self._sliders), self._device, name=u'Slider_Modes')
-        self._shift_modes = ShiftableSelectorComponent(tuple(self._select_buttons), self._master_select_button, self._tap_tempo_button, tuple(self._arm_buttons), self._matrix, self._session, self._session_zoom, self._mixer, self._transport, self._slider_modes, self._send_introduction_message, self._note_matrix, self._background, self._device, self._detail_view_toggler, self._device_on_off_button, self._device_lock_button, self._device_clip_toggle_button, self._detail_toggle_button, self._detail_left_button, self._detail_right_button, name=u'Shift_Modes')
+        self._shift_modes = ShiftableSelectorComponent(tuple(self._select_buttons), self._master_select_button, self._tap_tempo_button, tuple(self._arm_buttons), self._matrix, self._session, self._session_zoom, self._mixer, self._transport, self._slider_modes, self._send_introduction_message, self._note_matrix, self._background, self._device, self._detail_view_toggler, self._device_on_off_button, self._device_lock_button, self._device_clip_toggle_button, self._detail_toggle_button, self._detail_left_button, self._detail_right_button, self._device_bank_prev_button, self._device_bank_next_button, self._nudge_up_button, self._nudge_down_button, name=u'Shift_Modes')
         self._shift_modes.set_mode_toggle(self._shift_button)
 
     def _product_model_id_byte(self):
