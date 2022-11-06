@@ -7,7 +7,7 @@ Remote script for Akai APC20 controller with added few features:
 This is 2nd version of the script. For v1 go [here](https://github.com/tomekskuta/APC20_DC/tree/v1).
 
 ## How it works
-![Akai APC20](./APC20.jpeg)
+![Akai APC20](./APC20_v2.jpeg)
 
 All numbered buttons work only if `SHIFT` is pressed:
 - `1` - Tap tempo
