@@ -78,6 +78,7 @@ class APC20(APC):
                 button.send_depends_on_forwarding = False
 
             self._note_matrix.add_row(row)
+        self._tap_tempo_button = self._scene_launch_buttons[0]
 
     def _create_session(self):
         self._session = SessionComponent(SESSION_WIDTH,
@@ -130,6 +131,7 @@ class APC20(APC):
           (tuple(self._sliders)), name="Slider_Modes")
         self._shift_modes = ShiftableSelectorComponent((tuple(self._select_buttons)),
           (self._master_select_button),
+          (self._tap_tempo_button),
           (tuple(self._arm_buttons)),
           (self._matrix),
           (self._session),

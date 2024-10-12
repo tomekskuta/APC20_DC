@@ -9,13 +9,14 @@ from .consts import ABLETON_MODE, NOTE_MODE
 
 class ShiftableSelectorComponent(ModeSelectorComponent):
 
-    def __init__(self, select_buttons, master_button, arm_buttons, matrix, session, zooming, mixer, transport, slider_modes, mode_callback, note_matrix, background, *a, **k):
+    def __init__(self, select_buttons, master_button, tap_tempo_button, arm_buttons, matrix, session, zooming, mixer, transport, slider_modes, mode_callback, note_matrix, background, *a, **k):
         (super(ShiftableSelectorComponent, self).__init__)(*a, **k)
         self._toggle_pressed = False
         self._note_mode_active = False
         self._invert_assignment = False
         self._select_buttons = select_buttons
         self._master_button = master_button
+        self._tap_tempo_button = tap_tempo_button
         self._slider_modes = slider_modes
         self._arm_buttons = arm_buttons
         self._transport = transport
@@ -33,6 +34,7 @@ class ShiftableSelectorComponent(ModeSelectorComponent):
         self._master_button.remove_value_listener(self._master_value)
         self._select_buttons = None
         self._master_button = None
+        self._tap_tempo_button = None
         self._slider_modes = None
         self._arm_buttons = None
         self._transport = None
@@ -60,11 +62,12 @@ class ShiftableSelectorComponent(ModeSelectorComponent):
         self._session.set_scene_bank_buttons(down, up)
         self._zooming.set_nav_buttons(up, down, left, right)
 
-    def _set_transport_controls(self, play, stop, rec, overdub):
+    def _set_transport_controls(self, play, stop, rec, overdub, tap_tempo):
         self._transport.set_play_button(play)
         self._transport.set_stop_button(stop)
         self._transport.set_record_button(rec)
         self._transport.set_overdub_button(overdub)
+        self._transport.set_tap_tempo_button(tap_tempo)
 
     def update(self):
         super(ShiftableSelectorComponent, self).update()
@@ -75,12 +78,12 @@ class ShiftableSelectorComponent(ModeSelectorComponent):
                     strip.set_select_button(None)
 
                 self._mixer.master_strip().set_select_button(None)
-                self._set_transport_controls(self._select_buttons[0], self._select_buttons[1], self._select_buttons[2], self._select_buttons[3])
+                self._set_transport_controls(self._select_buttons[0], self._select_buttons[1], self._select_buttons[2], self._select_buttons[3], None)
                 if not self._note_mode_active:
                     self._set_session_navigation_controls(self._select_buttons[4], self._select_buttons[5], self._select_buttons[6], self._select_buttons[7])
                 self._on_note_mode_changed()
             elif self._mode_index == 1:
-                self._set_transport_controls(None, None, None, None)
+                self._set_transport_controls(None, None, None, None, self._tap_tempo_button)
                 self._set_session_navigation_controls(None, None, None, None)
                 for index in range(len(self._select_buttons)):
                     strip = self._mixer.channel_strip(index)
@@ -125,7 +128,7 @@ class ShiftableSelectorComponent(ModeSelectorComponent):
                             button.clear_send_cache()
 
                         self._note_matrix.reset()
-                    self._set_transport_controls(self._select_buttons[0], self._select_buttons[1], self._select_buttons[2], self._select_buttons[3])
+                    self._set_transport_controls(self._select_buttons[0], self._select_buttons[1], self._select_buttons[2], self._select_buttons[3], None)
                     self._transport.update()
                     if self._note_mode_active:
                         for button in self._note_matrix:
