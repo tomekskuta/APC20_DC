@@ -9,7 +9,7 @@ from .consts import ABLETON_MODE, NOTE_MODE
 
 class ShiftableSelectorComponent(ModeSelectorComponent):
 
-    def __init__(self, select_buttons, master_button, tap_tempo_button, arm_buttons, matrix, session, zooming, mixer, transport, slider_modes, mode_callback, note_matrix, background, *a, **k):
+    def __init__(self, select_buttons, master_button, tap_tempo_button, arm_buttons, matrix, session, zooming, mixer, transport, slider_modes, mode_callback, note_matrix, background, device, *a, **k):
         (super(ShiftableSelectorComponent, self).__init__)(*a, **k)
         self._toggle_pressed = False
         self._note_mode_active = False
@@ -27,6 +27,7 @@ class ShiftableSelectorComponent(ModeSelectorComponent):
         self._mode_callback = mode_callback
         self._note_matrix = note_matrix
         self._background = background
+        self._device = device
         self._master_button.add_value_listener(self._master_value)
 
     def disconnect(self):
@@ -45,6 +46,7 @@ class ShiftableSelectorComponent(ModeSelectorComponent):
         self._mode_callback = None
         self._note_matrix = None
         self._background = None
+        self._device = None
 
     def set_mode_toggle(self, button):
         super(ShiftableSelectorComponent, self).set_mode_toggle(button)

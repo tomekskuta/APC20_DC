@@ -7,12 +7,15 @@ from functools import partial
 import Live
 MapMode = Live.MidiMap.MapMode
 from _Framework.ButtonMatrixElement import ButtonMatrixElement as ButtonMatrixElement
+from _Framework.ChannelTranslationSelector import ChannelTranslationSelector
 from _Framework.EncoderElement import EncoderElement as EncoderElement
 from _Framework.InputControlElement import MIDI_CC_TYPE
 from _Framework.TransportComponent import TransportComponent as TransportComponent
 from _APC.APC import APC as APC
 from _APC.ControlElementUtils import make_button, make_pedal_button, make_slider
+from _APC.DetailViewCntrlComponent import DetailViewCntrlComponent
 from _APC.MixerComponent import MixerComponent as MixerComponent
+from _APC.DeviceComponent import DeviceComponent
 from _APC.SessionComponent import SessionComponent as SessionComponent
 from _APC.SkinDefault import make_biled_skin
 from .BackgroundComponent import BackgroundComponent
@@ -32,11 +35,14 @@ class APC20(APC):
             self._create_controls()
             self._create_session()
             self._create_mixer()
+            self._create_device()
+            self._create_detail_view_control()
             self._create_transport()
             self._create_background()
             self._create_global_control()
             self._session.set_mixer(self._mixer)
             self.set_highlighting_session_component(self._session)
+            self.set_device_component(self._device)
             for component in self.components:
                 component.set_enabled(False)
 
@@ -120,6 +126,13 @@ class APC20(APC):
         self._mixer.set_prehear_volume_control(self._prehear_control)
         self._mixer.master_strip().set_volume_control(self._master_volume_control)
 
+    def _create_device(self):
+        self._device = DeviceComponent(name=u'Device_Component', is_enabled=False, use_fake_banks=True, device_selection_follows_track_selection=True)
+        ChannelTranslationSelector(8, name=b'Control_Translations')
+
+    def _create_detail_view_control(self):
+        self._detail_view_toggler = DetailViewCntrlComponent(name=b'Detail_View_Control', is_enabled=False)
+
     def _create_transport(self):
         self._transport = TransportComponent(name="Transport")
 
@@ -128,7 +141,7 @@ class APC20(APC):
 
     def _create_global_control(self):
         self._slider_modes = SliderModesComponent((self._mixer),
-          (tuple(self._sliders)), name="Slider_Modes")
+          (tuple(self._sliders)), (self._device), name="Slider_Modes")
         self._shift_modes = ShiftableSelectorComponent((tuple(self._select_buttons)),
           (self._master_select_button),
           (self._tap_tempo_button),
@@ -142,6 +155,7 @@ class APC20(APC):
           (self._send_introduction_message),
           (self._note_matrix),
           (self._background),
+          (self._device),
           name="Shift_Modes")
         self._shift_modes.set_mode_toggle(self._shift_button)
 

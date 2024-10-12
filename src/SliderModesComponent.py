@@ -8,16 +8,18 @@ from _Framework.ModeSelectorComponent import ModeSelectorComponent as ModeSelect
 
 class SliderModesComponent(ModeSelectorComponent):
 
-    def __init__(self, mixer, sliders, *a, **k):
+    def __init__(self, mixer, sliders, device, *a, **k):
         (super(SliderModesComponent, self).__init__)(*a, **k)
         self._mixer = mixer
         self._sliders = sliders
+        self._device = device
         self._mode_index = 0
 
     def disconnect(self):
         super(SliderModesComponent, self).disconnect()
         self._mixer = None
         self._sliders = None
+        self._device = None
 
     def set_mode_buttons(self, buttons):
         for button in self._modes_buttons:
@@ -44,11 +46,16 @@ class SliderModesComponent(ModeSelectorComponent):
                 else:
                     self._modes_buttons[index].turn_off()
 
+            self._device.set_parameter_controls(None)
+
             for index in range(len(self._sliders)):
                 strip = self._mixer.channel_strip(index)
                 slider = self._sliders[index]
                 slider.use_default_message()
-                slider.set_identifier(slider.message_identifier() - self._mode_index)
+                if self._mode_index == 7:
+                    slider.set_identifier(16 + index)
+                else:
+                    slider.set_identifier(slider.message_identifier() - self._mode_index)
                 strip.set_volume_control(None)
                 strip.set_pan_control(None)
                 strip.set_send_controls((None, None, None))
@@ -57,8 +64,11 @@ class SliderModesComponent(ModeSelectorComponent):
                     strip.set_volume_control(slider)
                 if self._mode_index == 1:
                     strip.set_pan_control(slider)
-                if self._mode_index < 5:
+                if self._mode_index >= 2 and self._mode_index < 5:
                     send_controls = [
                      None, None, None]
                     send_controls[self._mode_index - 2] = slider
                     strip.set_send_controls(tuple(send_controls))
+
+            if self._mode_index == 7:
+                self._device.set_parameter_controls(self._sliders)
