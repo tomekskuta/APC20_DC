@@ -1,4 +1,6 @@
-#Embedded file name: /Users/versonator/Jenkins/live/output/Live/mac_64_static/Release/python-bundle/MIDI Remote Scripts/APC20/BackgroundComponent.py
+# Embedded file name: output/Live/mac_universal_64_static/Release/python-bundle/MIDI Remote Scripts/APC20/BackgroundComponent.py
+# Compiled at: 2024-08-27 23:56:43
+# Size of source mod 2**32: 595 bytes
 from __future__ import absolute_import, print_function, unicode_literals
 from _Framework.BackgroundComponent import BackgroundComponent as BackgroundComponentBase
 from _Framework.Util import nop
